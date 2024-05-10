@@ -596,17 +596,17 @@ const renderProductCard = async () => {
             const card = createProductCard(product)
             const secondCard = createProductCardInHome(product)
             const thirdCard = createProductCardInShop(product)
-            if (window.location.pathname === "/post-product.html" && window.location.pathname === "/post-product") {
+            if (window.location.pathname === "/post-product.html" || window.location.pathname === "/post-product") {
 
                 productList.appendChild(card)
-            } else if (window.location.pathname === "/shop.html" && window.location.pathname === "/shop") {
+            } else if (window.location.pathname === "/shop.html" || window.location.pathname === "/shop") {
 
                 productList.appendChild(thirdCard)
 
-            } else if (window.location.pathname === "/index.html" && window.location.pathname === "https://dragonnier-site.netlify.app/" ) {
+            } else if (window.location.pathname === "/index.html" || window.location.pathname === "https://dragonnier-site.netlify.app/" ) {
 
                 productList2.appendChild(secondCard)
-            }
+            } else { ""}
         })
     } catch (error) { console.error('Error rendering product card: ', error) }
 }
