@@ -603,7 +603,7 @@ const renderProductCard = async () => {
 
                 productList.appendChild(thirdCard)
 
-            } else {
+            } else if (window.location.pathname === "/index.html" && window.location.pathname === "/" && window.location.pathname === "") {
 
                 productList2.appendChild(secondCard)
             }
