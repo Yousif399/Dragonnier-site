@@ -603,7 +603,7 @@ const renderProductCard = async () => {
 
                 productList.appendChild(thirdCard)
 
-            } else if (window.location.pathname === "/index.html" && window.location.pathname === "/" && window.location.pathname === "") {
+            } else if (window.location.pathname === "/index.html" && window.location.pathname === "https://dragonnier-site.netlify.app/" ) {
 
                 productList2.appendChild(secondCard)
             }
