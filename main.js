@@ -346,7 +346,7 @@ const onSubmit = async () => {
         productImg,
         productQuantity
     }
-    const url = `http://127.0.0.1:5000/create-product`;
+    const url = `https://dragonnier-site-be.onrender.com/create-product`;
     const options = {
         method: "POST",
         headers: {
@@ -370,17 +370,10 @@ const onSubmit = async () => {
 
 const fetchProducts = async () => {
     try {
-        const response = await fetch('http://127.0.0.1:5000/product')
+        const response = await fetch('https://dragonnier-site-be.onrender.com/product')
         const data = await response.json()
         // console.log(data.products)
         const products = data.products
-        // console.log(products)
-        // products.map((product) => {
-        //     console.log(product.id)
-        //     var node = document.getElementById('manage-product');
-        //     console.log(node)
-        //     node.innerHTML`<p>some dynamic html  </p>`;
-        // })
         return products
 
     } catch (error) {
@@ -391,7 +384,7 @@ const fetchProducts = async () => {
 const deleteProduct = async (id) => {
     try {
         console.log(id)
-        const url = `http://127.0.0.1:5000/delete-product/${id}`
+        const url = `https://dragonnier-site-be.onrender.com/delete-product/${id}`
         const options = {
             method: "DELETE"
         }
@@ -566,7 +559,7 @@ const getUpdatesInfo = async (data, id) => {
     console.log(data)
     console.log(id)
 
-    const url = `http://127.0.0.1:5000/update-product/${id}`
+    const url = `https://dragonnier-site-be.onrender.com/update-product/${id}`
     const options = {
         method: "PATCH",
         headers: {
