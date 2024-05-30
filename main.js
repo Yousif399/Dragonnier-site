@@ -34,11 +34,12 @@ var changeNumber = (document.getElementById('output'));
 
 // form information's
 const nameOfProduct = document.querySelector('.product-name');
-var subTotal = parseInt(document.querySelector('.subtotal-element'));
+var subTotal = (document.querySelector('.subtotal-element'));
 var taxes = document.querySelector('.taxes');
 var total = document.querySelector('.total-element');
 const orderBtn = document.querySelector('.oreder-now');
 const restBtn = document.querySelector('.rest-form')
+
 
 // for values 
 const orderForm = document.querySelector('#order-form')
@@ -63,7 +64,7 @@ buyBtn.forEach((btn) => {
     // console.log(btn)
     btn.addEventListener('click', (event) => {
         // console.log('working')
-        popUpContainer.classList.add('active')
+        // popUpContainer.classList.add('active')
         const parentCard = event.target.closest('.shop-card');
         // console.log(parentCard)
         const priceElement = parentCard.querySelector('.price');
@@ -120,43 +121,60 @@ if (closePopUp) {
     }
 
 }
+const anyThing = async (id) => {
+    popUpContainer.classList.add('active')
+    products = await fetchProducts()
+    item = (products.find(item => item.id === id))
+    
+    nameOfProduct.innerHTML = item.productName
+    firmPrice = parseInt(item.productPrice)
+    subTotal = parseInt(item.productPrice)
+    document.querySelector('.subtotal-element').innerHTML = `$ ${subTotal}`;
+    calculateTax(subTotal);
+    calculateTotal(subTotal, calculateTax(subTotal));
+    
+    addRemoveBtn.forEach((click) => {
+        
+        click.addEventListener('click', function () {
+            const addRemoveBtnInput = click.innerText
+            
+            if (addRemoveBtnInput === '-' && newChangeNumber > 4) {
+                console.log('decrease')
+                newChangeNumber -= 1
+                console.log((newChangeNumber))
+                document.getElementById("output").innerHTML = newChangeNumber
+                singleProduct = firmPrice / 4
+                subTotal -= singleProduct
+                document.querySelector('.subtotal-element').innerHTML = `$ ${Math.floor(subTotal * 100) / 100}`
 
-addRemoveBtn.forEach((click) => {
-    // console.log(click)
-    click.addEventListener('click', function () {
-        const addRemoveBtnInput = click.innerText
-        console.log(addRemoveBtnInput)
-        if (addRemoveBtnInput === '-' && newChangeNumber > 4) {
-            console.log('decrease')
-            newChangeNumber -= 1
-            console.log((newChangeNumber))
-            document.getElementById("output").innerHTML = newChangeNumber
-            subTotal -= 31.25
-            document.querySelector('.subtotal-element').innerHTML = `$ ${Math.floor(subTotal * 100) / 100}`
-            calculateTax(subTotal)
-            calculateTotal(subTotal, calculateTax(subTotal))
+                calculateTax(subTotal)
+                calculateTotal(subTotal, calculateTax(subTotal))
 
+            } else if (addRemoveBtnInput === '+') {
+                // console.log(0 )
+                console.log('increase')
+                newChangeNumber += 1
+                console.log((newChangeNumber))
+                document.getElementById("output").innerHTML = newChangeNumber
+                singleProduct = firmPrice / 4
+                subTotal += singleProduct
+                console.log(subTotal)
+                document.querySelector('.subtotal-element').innerHTML = `$ ${Math.floor(subTotal * 100) / 100}`
+                calculateTax(subTotal)
+                calculateTotal(subTotal, calculateTax(subTotal))
 
-        } else if (addRemoveBtnInput === '+') {
-            // console.log(0 )
-            console.log('increase')
-            newChangeNumber += 1
-            console.log((newChangeNumber))
-            document.getElementById("output").innerHTML = newChangeNumber
-            subTotal += 31.25
-            document.querySelector('.subtotal-element').innerHTML = `$ ${Math.floor(subTotal * 100) / 100}`
-            calculateTax(subTotal)
-            calculateTotal(subTotal, calculateTax(subTotal))
-
-        }
-        else {
-            alert('Can not make orders less than 4 ')
-        }
+            }
+            else {
+                alert('Can not make orders less than 4 ')
+            }
+        })
     })
-})
+    return id
+}
 
 
 function calculateTax(amount) {
+    console.log(amount)
     pluTaxAmount = (amount * 0.13)
     return document.querySelector('.taxes').innerHTML = `$ ${Math.floor(pluTaxAmount * 100) / 100}`
 }
@@ -176,16 +194,18 @@ function calculateTotal(subtotal, taxes) {
 }
 
 
-function restForm() {
+async function restForm() {
+
     return (
-        document.querySelector('.subtotal-element').innerHTML = 124.99,
-        console.log(subTotal),
-        taxes.innerHTML = 16.24,
-        document.querySelector('.total-element').innerHTML = 150.99,
-        subTotal = 124.99,
-        calculateTotal(subTotal, calculateTax(subTotal)),
-        newChangeNumber = 4,
-        (document.getElementById('output').innerHTML) = newChangeNumber
+        // document.querySelector('.subtotal-element').innerHTML = 124.99,
+        // console.log(subTotal),
+        // taxes.innerHTML = 16.24,
+        // document.querySelector('.total-element').innerHTML = 150.99,
+        // subTotal = 124.99,
+        // calculateTotal(subTotal, calculateTax(subTotal)),
+        // newChangeNumber = 4,
+        // (document.getElementById('output').innerHTML) = newChangeNumber
+        ""
 
     )
 }
@@ -291,40 +311,47 @@ document.addEventListener("keydown", (e) => {
 // })
 
 // when click on oreder now.
-function buyItem() {
+const buyItem = async () => {
     console.log('working');
-    var phoneNumber = '2898002041';
-    var productName = globalProductName;
-    var quantity = newChangeNumber;
-    var costumerName = nameElement.value;
-    var costumerEmail = emailElement.value;
-    var costumerAddress = `${addressElement.value} ${postalCodeElement.value} ${cityElement.value}`;
-    var costumerCompany = companyElement.value;
-    var costumerNumber = numberElement.value;
-    const currentDay = new Date();
-    const day = currentDay.toLocaleString('default', { weekday: 'long' })
-    const month = currentDay.toLocaleString('default', { month: 'long' })
-    const date = `${day[0] + day[1] + day[2]}` +
-        ` ${currentDay.getDate()}` +
-        ` ${month}` +
-        ` ${currentDay.getFullYear()}` +
-        ` ${currentDay.toLocaleTimeString()}`
+  
+    const form = document.getElementById('order-form')
+    const formData = new FormData(form)
+
+    const formValues = {
+        name: formData.get('name'),
+        email: formData.get('email'),
+        address: formData.get('address'),
+        postalCode: formData.get('postal-code'),
+        city: formData.get('city'),
+        phone: formData.get('phone'),
+        company: formData.get('company'),
+        quantity: document.getElementById('output').innerText,  // Get the quantity from the output element
+        product: document.querySelector('.product-name').innerText,  // Get product name
+        subtotal: document.querySelector('.subtotal-element').innerText,  // Get subtotal
+        taxes: document.querySelector('.taxes').innerText,  // Get taxes
+        total: document.querySelector('.total-element').innerText
+    }
+
+    console.log(formValues)
 
 
-    var message = `Placing an order from ${costumerName}. ` + `\nProduct: ${productName}. ` + `\nQuantity: ${quantity}. ` +
-        `\nCompany: ${costumerCompany}. ` +
-        `\nAddress: ${costumerAddress}. ` +
-        `\nEmail: ${costumerEmail}. ` +
-        `\nCostumer Number: ${costumerNumber}. ` +
-        `\nTotal: $ ${subTotal}. ` +
-        `\nOrder Date: ${date}`
+    const url = `https://dragonnier-site-be.onrender.com/place-order`
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify(formValues)
+    }
 
+    const response = await fetch(url, options)
+    if (response.ok) {
+        console.log('Confirmation email sent successfully');
+    } else {
+        console.error('Failed to send confirmation email');
+    }
 
-    console.log(message)
-
-    window.location.href = 'sms: ' + phoneNumber + '?&body=' + encodeURIComponent(message)
 }
-
 
 
 // CREATE UPDATE DELETE product page functionality ...
@@ -346,6 +373,7 @@ const onSubmit = async () => {
         productImg,
         productQuantity
     }
+    console.log(data)
     const url = `https://dragonnier-site-be.onrender.com/create-product`;
     const options = {
         method: "POST",
@@ -440,7 +468,7 @@ const createProductCardInHome = (product) => {
         <p class="price-tag"> $<span class="price">${product.productPrice}</span> </p>
         <div class="container buy-add-btn">
         
-            <button class="btn btn-secondary buy-btn" onclick=anyThing() >Buy now</button>
+            <button class="btn btn-secondary buy-btn" onclick=anyThing(${product.id}) >Buy now</button>
         </div>
     </div>
 
@@ -449,9 +477,7 @@ const createProductCardInHome = (product) => {
 
     return li;
 }
-const anyThing = () => {
-    popUpContainer.classList.add('active')
-}
+
 // rendering products on the shop page 
 const createProductCardInShop = (product) => {
     const li = document.createElement('li');
@@ -596,10 +622,10 @@ const renderProductCard = async () => {
 
                 productList.appendChild(thirdCard)
 
-            } else if (window.location.pathname === "/index.html" || window.location.pathname === "/" ) {
+            } else if (window.location.pathname === "/index.html" || window.location.pathname === "/") {
                 console.log(window.location.pathname)
                 productList2.appendChild(secondCard)
-            } 
+            }
         })
     } catch (error) { console.error('Error rendering product card: ', error) }
 }
