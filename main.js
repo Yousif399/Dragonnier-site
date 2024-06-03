@@ -29,7 +29,7 @@ const addRemoveBtn = document.querySelectorAll(".add-remove span");
 const productQuantity = parseInt(document.querySelector(".add-remove output"));
 const popUpContainer = document.querySelector('.popup-container');
 const closePopUp = document.querySelector('.close-btn');
-var changeNumber = (document.getElementById('output'));
+var changeNumber = document.getElementById('output');
 // const itemPrice = document.querySelectorAll('.price');
 
 // form information's
@@ -50,9 +50,9 @@ const postalCodeElement = document.querySelector('.postal-code')
 const cityElement = document.querySelector('.city')
 const numberElement = document.querySelector('.number')
 const companyElement = document.querySelector('.company')
+const orderBtnAnimation = document.querySelector('.order')
 
-let globalProductName = ""
-var newChangeNumber = 4
+
 
 
 
@@ -60,36 +60,32 @@ var newChangeNumber = 4
 // var newValue = document.getElementById("output").innerHTML
 
 
-buyBtn.forEach((btn) => {
-    // console.log(btn)
-    btn.addEventListener('click', (event) => {
-        // console.log('working')
-        // popUpContainer.classList.add('active')
-        const parentCard = event.target.closest('.shop-card');
-        // console.log(parentCard)
-        const priceElement = parentCard.querySelector('.price');
-        const productElement = parentCard.querySelector('.card-title');
-        const productName = productElement.textContent.trim();
-        var price = parseFloat(priceElement.textContent.trim());
-        // console.log('Name:', productName);
-        console.log('Price:', price);
-        nameOfProduct.innerHTML = productName;
-        globalProductName = productName;
-        subTotal = price;
-        document.querySelector('.subtotal-element').innerHTML = `$ ${price}`;
-        calculateTax(subTotal);
-        calculateTotal(subTotal, calculateTax(subTotal));
-    })
-})
+// buyBtn.forEach((btn) => {
+//     // console.log(btn)
+//     btn.addEventListener('click', (event) => {
+//         // console.log('working')
+//         // popUpContainer.classList.add('active')
+//         const parentCard = event.target.closest('.shop-card');
+//         // console.log(parentCard)
+//         const priceElement = parentCard.querySelector('.price');
+//         const productElement = parentCard.querySelector('.card-title');
+//         const productName = productElement.textContent.trim();
+//         var price = parseFloat(priceElement.textContent.trim());
+//         // console.log('Name:', productName);
+//         console.log('Price:', price);
+//         nameOfProduct.innerHTML = productName;
+//         globalProductName = productName;
+//         subTotal = price;
+//         document.querySelector('.subtotal-element').innerHTML = `$ ${price}`;
+//         calculateTax(subTotal);
+//         calculateTotal(subTotal, calculateTax(subTotal));
+//     })
+// })
 
-if (restBtn) {
-    restBtn.onclick = () => {
-        restForm()
-    }
-}
+
 
 if (orderBtn) {
-    orderBtn.onclick = (e) => {
+    orderBtn.onclick = (event) => {
         const requiredFields = orderForm.querySelectorAll('input[required]')
         let isFormValid = true;
 
@@ -101,7 +97,7 @@ if (orderBtn) {
         })
         if (isFormValid) {
             console.log('form length', orderForm.value)
-            buyItem()
+            buyItem(orderBtnAnimation)
             orderForm.reset()
             // window.location.href = ('orderconfirmed.html')
         } else {
@@ -116,61 +112,86 @@ if (closePopUp) {
     closePopUp.onclick = () => {
         popUpContainer.classList.remove('active')
         // console.log(popUpContainer == true)
-        newChangeNumber = 4
-        document.getElementById("output").innerHTML = newChangeNumber
+
     }
 
 }
 const anyThing = async (id) => {
-    popUpContainer.classList.add('active')
-    products = await fetchProducts()
-    item = (products.find(item => item.id === id))
-    
-    nameOfProduct.innerHTML = item.productName
-    firmPrice = parseInt(item.productPrice)
-    subTotal = parseInt(item.productPrice)
-    document.querySelector('.subtotal-element').innerHTML = `$ ${subTotal}`;
-    calculateTax(subTotal);
-    calculateTotal(subTotal, calculateTax(subTotal));
-    
-    addRemoveBtn.forEach((click) => {
-        
-        click.addEventListener('click', function () {
-            const addRemoveBtnInput = click.innerText
-            
-            if (addRemoveBtnInput === '-' && newChangeNumber > 4) {
-                console.log('decrease')
-                newChangeNumber -= 1
-                console.log((newChangeNumber))
-                document.getElementById("output").innerHTML = newChangeNumber
-                singleProduct = firmPrice / 4
-                subTotal -= singleProduct
-                document.querySelector('.subtotal-element').innerHTML = `$ ${Math.floor(subTotal * 100) / 100}`
+    popUpContainer.classList.add('active');
 
-                calculateTax(subTotal)
-                calculateTotal(subTotal, calculateTax(subTotal))
+    try {
+        const products = await fetchProducts();
+        const item = products.find(item => item.id === id);
 
-            } else if (addRemoveBtnInput === '+') {
-                // console.log(0 )
-                console.log('increase')
-                newChangeNumber += 1
-                console.log((newChangeNumber))
-                document.getElementById("output").innerHTML = newChangeNumber
-                singleProduct = firmPrice / 4
-                subTotal += singleProduct
-                console.log(subTotal)
-                document.querySelector('.subtotal-element').innerHTML = `$ ${Math.floor(subTotal * 100) / 100}`
-                calculateTax(subTotal)
-                calculateTotal(subTotal, calculateTax(subTotal))
+        if (!item) {
+            console.error(`Product with id ${id} not found`);
+            return;
+        }
 
+        const firmPrice = parseInt(item.productPrice);
+        let subTotal = firmPrice;
+        let newChangeNumber = 4; // Assuming initial quantity is 4
+
+        nameOfProduct.innerHTML = item.productName;
+        document.querySelector('.subtotal-element').innerHTML = `$${subTotal.toFixed(2)}`;
+
+        const updateTotals = (subTotal) => {
+            const tax = calculateTax(subTotal);
+            const total = calculateTotal(subTotal, tax);
+            // Update UI elements for tax and total if needed
+        };
+
+        updateTotals(subTotal);
+
+        addRemoveBtn.forEach((btn) => {
+            btn.addEventListener('click', () => {
+                const action = btn.innerText;
+
+                if (action === '-' && newChangeNumber > 4) {
+                    newChangeNumber -= 1;
+                    subTotal -= firmPrice / 4;
+                } else if (action === '+') {
+                    newChangeNumber += 1;
+                    console.log(changeNumber)
+                    subTotal += firmPrice / 4;
+                } else {
+                    alert('Cannot make orders less than 4');
+                    return;
+                }
+
+                document.getElementById("output").innerHTML = newChangeNumber;
+                document.querySelector('.subtotal-element').innerHTML = `$${subTotal.toFixed(2)}`;
+
+                updateTotals(subTotal);
+            });
+        });
+        if (restBtn) {
+            restBtn.onclick = () => {
+
+                console.log('resetinggg', item.id)
+                const firmPrice = parseInt(item.productPrice);
+                subTotal = firmPrice;
+                newChangeNumber = 4; // Assuming initial quantity is 4
+                changeNumber.textContent = 4
+                console.log(changeNumber)
+
+
+                document.querySelector('.subtotal-element').innerHTML = `$${subTotal.toFixed(2)}`;
+
+                const updateTotals = (subTotal) => {
+                    const tax = calculateTax(subTotal);
+                    const total = calculateTotal(subTotal, tax);
+                    // Update UI elements for tax and total if needed
+                };
+
+                updateTotals(subTotal);
             }
-            else {
-                alert('Can not make orders less than 4 ')
-            }
-        })
-    })
-    return id
-}
+        }
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
+};
+
 
 
 function calculateTax(amount) {
@@ -193,22 +214,6 @@ function calculateTotal(subtotal, taxes) {
     return document.querySelector('.total-element').innerHTML = `$ ${Math.floor(total * 100) / 100}`
 }
 
-
-async function restForm() {
-
-    return (
-        // document.querySelector('.subtotal-element').innerHTML = 124.99,
-        // console.log(subTotal),
-        // taxes.innerHTML = 16.24,
-        // document.querySelector('.total-element').innerHTML = 150.99,
-        // subTotal = 124.99,
-        // calculateTotal(subTotal, calculateTax(subTotal)),
-        // newChangeNumber = 4,
-        // (document.getElementById('output').innerHTML) = newChangeNumber
-        ""
-
-    )
-}
 
 
 
@@ -304,16 +309,27 @@ document.addEventListener("keydown", (e) => {
     }
 })
 
-// dropdownBtnB.forEach((btn) => {
-//     btn.addEventListener('click', (e) => {e.stopPropagation();}
+// order style
+const placeOrderAnimation = function (button) {
+    // let button = this
+    console.log(button)
 
-//     )
-// })
+    if (button && !button.classList.contains('animate')) {
+        button.classList.add('animate');
+        setTimeout(() => {
+            button.classList.remove('animate');
+            popUpContainer.classList.remove('active')
+            window.location.href='index.html'
+        }, 10000)
+        
+    }
+};
+
 
 // when click on oreder now.
-const buyItem = async () => {
+const buyItem = async (button) => {
     console.log('working');
-  
+
     const form = document.getElementById('order-form')
     const formData = new FormData(form)
 
@@ -332,7 +348,6 @@ const buyItem = async () => {
         total: document.querySelector('.total-element').innerText
     }
 
-    console.log(formValues)
 
 
     const url = `https://dragonnier-site-be.onrender.com/place-order`
@@ -342,14 +357,26 @@ const buyItem = async () => {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(formValues)
+    };
+    try {
+
+        const response = await fetch(url, options)
+        if (response.ok) {
+            console.log('Confirmation email sent successfully');
+        } else {
+            console.error('Failed to send confirmation email');
+        }
+    } catch (error) {
+        console.log('Error: ', error)
+         
     }
 
-    const response = await fetch(url, options)
-    if (response.ok) {
-        console.log('Confirmation email sent successfully');
-    } else {
-        console.error('Failed to send confirmation email');
-    }
+    orderForm.classList.add('hide-form')
+    console.log(button)
+
+
+    placeOrderAnimation(button)
+   
 
 }
 
@@ -451,6 +478,7 @@ const createProductCard = (product) => {
 }
 //  rendering products on the index (home ) page 
 const createProductCardInHome = (product) => {
+    // console.log(product.length)
     const li = document.createElement('li');
     li.innerHTML = `
     <div class="${product.id === 1 ? "shop-card" : "shop-card grid"}"  id="first-grid">
@@ -494,7 +522,7 @@ const createProductCardInShop = (product) => {
                 <h3 class="h3">${product.productName}</h3>
 
                 <p class="card-subtitle">
-                    ${product.productPrice}
+                    $${product.productPrice}
                 </p>
                 <button class="btn btn-secondary buy-btn">Buy now</button>
 
@@ -610,7 +638,7 @@ const renderProductCard = async () => {
     try {
         const products = await fetchProducts();
         console.log(products)
-        products.forEach(product => {
+        products.forEach((product, index) => {
             // console.log(product)
             const card = createProductCard(product)
             const secondCard = createProductCardInHome(product)
@@ -618,12 +646,13 @@ const renderProductCard = async () => {
             if (window.location.pathname === "/post-product.html" || window.location.pathname === "/post-product") {
 
                 productList.appendChild(card)
-            } else if (window.location.pathname === "/shop.html" || window.location.pathname === "/shop") {
+            } if (window.location.pathname === "/shop.html" || window.location.pathname === "/shop") {
 
                 productList.appendChild(thirdCard)
 
-            } else if (window.location.pathname === "/index.html" || window.location.pathname === "/") {
+            } if ((window.location.pathname === "/index.html" || window.location.pathname === "/") && index <= 5) {
                 console.log(window.location.pathname)
+                console.log('second', index)
                 productList2.appendChild(secondCard)
             }
         })
