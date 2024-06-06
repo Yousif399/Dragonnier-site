@@ -115,26 +115,30 @@
 
                     <!-- <p class="section-title">For any IT queries </p> -->
 
-                    <form onSubmit=onSubmit() id="product-form" class="contact-form">
+                    <form onSubmit=onSubmit(event) enctype="multipart/form-data" id="product-form" class="contact-form">
 
                         <div class="input-wrapper">
 
                             <input type="text" name="name" aria-label="name" placeholder="Product Name*" required
                                 class="input-field" id="product-name">
 
-                            <input type="number" step="0.01" name="price" aria-label="price" placeholder="Product Price:*" required
-                                class="input-field" id="product-price">
+                            <input type="number" step="0.01" name="price" aria-label="price"
+                                placeholder="Product Price:*" required class="input-field" id="product-price">
                         </div>
 
                         <div class="input-wrapper">
 
-                            <input type="url" name="img" aria-label="img" placeholder="Product Img*" required
+                            <input type="url" name="img" aria-label="img" placeholder="Product Img*" 
                                 class="input-field" id="product-img">
 
+                            <input type="file" name="productFile" aria-label="img-file"
+                                placeholder="Product Img from your device*"  class="input-field"
+                                id="product-file">
+                                
                             <input type="number" name="quantity" aria-label="name" placeholder="Product Quantity*"
                                 required class="input-field" id="product-quan">
-
                         </div>
+
 
                         <button type="submit" class="btn btn-secondary">Add more products +</button>
 
@@ -158,14 +162,14 @@
                                 <img src="images/DragonnierLogo.png" alt="logo" width="60">
                                 <h1>Update Product</h1>
                             </div>
-                            <form onSubmit="" id="product-formB" >
+                            <form  id="product-formB">
 
                                 <div class="input-wrapper">
                                     <input type="text" name="name" aria-label="name" placeholder="Product Name*"
-                                        required class="input-field" id="product-name" >
+                                        required class="input-field" id="product-name">
 
-                                    <input type="number" step="0.01" name="price" aria-label="price" placeholder="Product Price:*"
-                                        required class="input-field" id="product-price">
+                                    <input type="number" step="0.01" name="price" aria-label="price"
+                                        placeholder="Product Price:*" required class="input-field" id="product-price">
                                 </div>
 
                                 <div class="input-wrapper">
@@ -178,7 +182,8 @@
 
                                 </div>
 
-                                <button type="submit" class="btn btn-secondary" id="update-product">Update products +</button>
+                                <button type="submit" class="btn btn-secondary" id="update-product">Update products
+                                    +</button>
 
                             </form>
                         </div>

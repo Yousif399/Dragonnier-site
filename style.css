@@ -861,7 +861,7 @@ a.section-title {
 /* place order animation */
 
 .order {
-    display: flex;
+    display: none;
     -webkit-appearance: none;
     -moz-appearance: none;
     appearance: none;
@@ -881,6 +881,8 @@ a.section-title {
     transition: transform 0.5s ease;
     margin: auto;
 }
+
+.order.active {display: flex;}
 
 
 
@@ -1405,9 +1407,14 @@ html {
     margin-top: 10px;
 }
 
-.oreder-details .input-wrapper {
+.order-details .input-wrapper {
     justify-content: end;
 
+}
+
+#product-file {
+    width: min-content; 
+ 
 }
 
 /* Contact form */

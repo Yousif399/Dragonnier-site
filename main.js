@@ -97,6 +97,7 @@ if (orderBtn) {
         })
         if (isFormValid) {
             console.log('form length', orderForm.value)
+            orderBtnAnimation.classList.add('active')
             buyItem(orderBtnAnimation)
             orderForm.reset()
             // window.location.href = ('orderconfirmed.html')
@@ -319,9 +320,9 @@ const placeOrderAnimation = function (button) {
         setTimeout(() => {
             button.classList.remove('animate');
             popUpContainer.classList.remove('active')
-            window.location.href='index.html'
+            window.location.href = 'index.html'
         }, 10000)
-        
+
     }
 };
 
@@ -368,7 +369,7 @@ const buyItem = async (button) => {
         }
     } catch (error) {
         console.log('Error: ', error)
-         
+
     }
 
     orderForm.classList.add('hide-form')
@@ -376,13 +377,14 @@ const buyItem = async (button) => {
 
 
     placeOrderAnimation(button)
-   
+
 
 }
 
 
 // CREATE UPDATE DELETE product page functionality ...
-const onSubmit = async () => {
+const onSubmit = async (event) => {
+    event.preventDefault();
 
     console.log('submitting is working')
 
@@ -392,34 +394,44 @@ const onSubmit = async () => {
     var productPrice = document.getElementById('product-price').value
     var productImg = document.getElementById('product-img').value
     var productQuantity = document.getElementById('product-quan').value
+    var productFile = document.getElementById('product-file').files[0]
 
 
-    const data = {
-        productName,
-        productPrice,
-        productImg,
-        productQuantity
-    }
-    console.log(data)
-    const url = `https://dragonnier-site-be.onrender.com/create-product`;
+
+    const data = new FormData();
+    data.append("productName", productName)
+    data.append("productPrice", productPrice)
+    data.append("productImg", productImg)
+    data.append("productQuantity", productQuantity)
+
+    if (productFile) { data.append("productFile", productFile) }
+
+    console.log("dataaa", ...data)
+
+    
+    const url = ` https://dragonnier-site-be.onrender.com/create-product`;
     const options = {
         method: "POST",
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    }
+        body: data
+    };
 
 
-    const response = await fetch(url, options)
-    if (response.status !== 201 && response.status !== 200) {
+    try {
+        const response = await fetch(url, options)
         const data = await response.json()
-        alert('Couldn\'t post product check the server ')
-    } else {
-        console.log('data is uploaded', data)
+        if (response.status === 201 && response.status === 200) {
+            console.log('data is uploaded', data)
+        } else {
+            alert('Couldn\'t post product check the server ')
+        }
+    } catch (error) { 
+        console.error('Error', error)
+        alert('An error occurred while uploading the product.');
+
     }
 
 }
+
 
 
 
@@ -447,6 +459,7 @@ const deleteProduct = async (id) => {
         console.log(response)
         if (response.status === 200) {
             console.log('Product was deleted successfully ')
+            window.location.href = "post-product.html"
         } else { console.error('Failed to delete product') }
     } catch (error) { alert(error) }
 }
@@ -540,7 +553,6 @@ const createProductCardInShop = (product) => {
 const handleId = (id) => {
     console.log('id', id)
     deleteProduct(id)
-    window.location.href = ('post-product.html')
 
 }
 
@@ -596,14 +608,14 @@ const handleUpdating = async (id) => {
 
 
 
-    updateBtn.onclick = () => {
+    updateBtn.onclick = (e) => {
         if (data.productName === item.productName && data.productPrice === item.productPrice && data.productImg === item.productImg && data.productQuantity === item.productQuantity) {
             alert("No updates are made make sure to update the product ")
         }
 
         else {
-
             getUpdatesInfo(data, id)
+            e.stopPropagation()
             // window.location.href = ('post-product.html')
         }
     }
@@ -624,10 +636,13 @@ const getUpdatesInfo = async (data, id) => {
 
 
     const response = await fetch(url, options)
-    if (response.status !== 201 && response.status !== 200) {
+    console.log('working', response)
+    if (response.status === 201 && response.status === 200) {
+        console.log('Data is updated successfully ')
+    } else {
         const data = await response.json()
         alert('Couldn\'t post product check the server ', data)
-    } else { console.log('Data is updated successfully ') }
+    }
 
 
 }
