@@ -451,7 +451,7 @@ const fetchProducts = async () => {
 const deleteProduct = async (id) => {
     try {
         console.log(id)
-        const url = `https://dragonnier-site-be.onrender.com/delete-product/${id}`
+        const url = `https://dragonnier-site-be.onrender.com//delete-product/${id}`
         const options = {
             method: "DELETE"
         }
@@ -470,7 +470,7 @@ const createProductCard = (product) => {
     li.innerHTML = `
     <div class="shop-card grid">
     <figure class="card-banner img-holder" style="--width: 860; --height: 645;">
-      <img src="${product.productImg}" width="860" height="646" loading="lazy" alt="${product.productName}" class="img-cover">
+      <img src="${product.productImg  ? `https://dragonnier-site-be.onrender.com/uploads/${product.productImg}` :`http://127.0.0.1:5000/uploads/${product.productImg}` }" width="860" height="646" loading="lazy" alt="${product.productName}" class="img-cover">
     </figure>
     <div class="card-content">
       <h3 class="h3">
