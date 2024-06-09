@@ -408,7 +408,7 @@ const onSubmit = async (event) => {
 
     console.log("dataaa", ...data)
 
-    
+
     const url = ` https://dragonnier-site-be.onrender.com/create-product`;
     const options = {
         method: "POST",
@@ -424,7 +424,7 @@ const onSubmit = async (event) => {
         } else {
             alert('Couldn\'t post product check the server ')
         }
-    } catch (error) { 
+    } catch (error) {
         console.error('Error', error)
         alert('An error occurred while uploading the product.');
 
@@ -464,13 +464,25 @@ const deleteProduct = async (id) => {
     } catch (error) { alert(error) }
 }
 
+const checkImgFiles = (path) => {
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+        console.log('Is URL ')
+        console.log(path)
+        return false
+    } else {
+        console.log('Is File')
+        return true
+    }
+
+}
+
 // rendering products on the update page 
 const createProductCard = (product) => {
     const li = document.createElement('li');
     li.innerHTML = `
     <div class="shop-card grid">
     <figure class="card-banner img-holder" style="--width: 860; --height: 645;">
-      <img src="${product.productImg  ? `https://dragonnier-site-be.onrender.com/uploads/${product.productImg}` :`http://127.0.0.1:5000/uploads/${product.productImg}` }" width="860" height="646" loading="lazy" alt="${product.productName}" class="img-cover">
+      <img src="${product.productImg}" width="860" height="646" loading="lazy" alt="${product.productName}" class="img-cover">
     </figure>
     <div class="card-content">
       <h3 class="h3">
@@ -484,8 +496,6 @@ const createProductCard = (product) => {
   </div>
     `;
 
-    const updateBtn = li.querySelector('.edit');
-
 
     return li;
 }
@@ -497,9 +507,8 @@ const createProductCardInHome = (product) => {
     <div class="${product.id === 1 ? "shop-card" : "shop-card grid"}"  id="first-grid">
 
     <figure class="card-banner img-holder" style="--width: 860; --height: 645;">
-        <img src=${product.productImg}
-            width="860" height="646" loading="lazy" alt=${product.productName} class="img-cover">
-    </figure>
+    <img src="${product.productImg}" width="860" height="646" loading="lazy" alt="${product.productName}" class="img-cover">
+  </figure>
 
     <div class="card-content">
         
@@ -525,10 +534,9 @@ const createProductCardInShop = (product) => {
     li.innerHTML = `
         <div class="project-card">
 
-            <figure class="card-banner img-holder" style="--width:510 ; --height:700 ;">
-                <img src=${product.productImg}
-                    alt="Equipments" width="510" height="700" class="img-cover">
-            </figure>
+        <figure class="card-banner img-holder" style="--width: 860; --height: 645;">
+        <img src="${ product.productImg}" width="860" height="646" loading="lazy" alt="${product.productName}" class="img-cover">
+      </figure>
 
             <div class="card-content">
 
@@ -537,7 +545,8 @@ const createProductCardInShop = (product) => {
                 <p class="card-subtitle">
                     $${product.productPrice}
                 </p>
-                <button class="btn btn-secondary buy-btn">Buy now</button>
+
+                <button class="btn btn-secondary buy-btn" onclick=anyThing(${product.id}) >Buy now</button>
 
 
             </div>
@@ -674,6 +683,6 @@ const renderProductCard = async () => {
     } catch (error) { console.error('Error rendering product card: ', error) }
 }
 
-console.log(window.location.pathname)
+
 renderProductCard()
 
