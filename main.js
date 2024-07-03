@@ -326,6 +326,12 @@ const placeOrderAnimation = function (button) {
     }
 };
 
+// check if email exists 
+function validateEmail(email) {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email)
+
+}
 
 // when click on oreder now.
 const buyItem = async (button) => {
@@ -348,6 +354,9 @@ const buyItem = async (button) => {
         taxes: document.querySelector('.taxes').innerText,  // Get taxes
         total: document.querySelector('.total-element').innerText
     }
+    validateEmail(formValues.email)
+    console.log(validateEmail(formValues.email))
+    console.log(formValues.email)
 
 
 
@@ -361,22 +370,24 @@ const buyItem = async (button) => {
     };
     try {
 
-        const response = await fetch(url, options)
+        const response = await fetch(url, options);
+        const responseData = await response.json();
+        console.log(responseData.Message)
         if (response.ok) {
             console.log('Confirmation email sent successfully');
+            orderForm.classList.add('hide-form')
+            console.log(button)
+            placeOrderAnimation(button)
+
         } else {
-            console.error('Failed to send confirmation email');
+            console.error('Failed to send confirmation email: ', responseData.Message);
+            alert(`Error: ${responseData.Message}`)
         }
     } catch (error) {
         console.log('Error: ', error)
+        alert('Error: Server might be down,  check out later ')
 
     }
-
-    orderForm.classList.add('hide-form')
-    console.log(button)
-
-
-    placeOrderAnimation(button)
 
 
 }
@@ -445,13 +456,14 @@ const fetchProducts = async () => {
 
     } catch (error) {
         console.error('Not able to fetch data', error)
+
     }
 }
 
 const deleteProduct = async (id) => {
     try {
         console.log(id)
-        const url = `https://dragonnier-site-be.onrender.com//delete-product/${id}`
+        const url = `https://dragonnier-site-be.onrender.com/delete-product/${id}`
         const options = {
             method: "DELETE"
         }
@@ -502,6 +514,7 @@ const createProductCard = (product) => {
 //  rendering products on the index (home ) page 
 const createProductCardInHome = (product) => {
     // console.log(product.length)
+    const loading = document.querySelector('.loading')
     const li = document.createElement('li');
     li.innerHTML = `
     <div class="${product.id === 1 ? "shop-card" : "shop-card grid"}"  id="first-grid">
@@ -524,6 +537,9 @@ const createProductCardInHome = (product) => {
 
     </div>
     `;
+    const arrOb = Object.keys(product)
+    console.log(loading, arrOb.length)
+    if (arrOb.length > 0) { loading.classList.add('active') }
 
     return li;
 }
@@ -535,7 +551,7 @@ const createProductCardInShop = (product) => {
         <div class="project-card">
 
         <figure class="card-banner img-holder" style="--width: 860; --height: 645;">
-        <img src="${ product.productImg}" width="860" height="646" loading="lazy" alt="${product.productName}" class="img-cover">
+        <img src="${product.productImg}" width="860" height="646" loading="lazy" alt="${product.productName}" class="img-cover">
       </figure>
 
             <div class="card-content">

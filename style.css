@@ -744,6 +744,102 @@ a.section-title {
     overflow-wrap: break-word;
 }
 
+.loading.active {display: none;}
+/* .section-loading {text-align: center; font-weight: 600;} */
+
+.loading {
+    /* position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%; */
+    /* background-color: #000; */
+    z-index: 9999;
+}
+
+.loading-text {
+    /* position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0; */
+    margin: auto;
+    text-align: center;
+    width: 100%;
+    height: 10%;
+    line-height: 100px;
+}
+
+.loading-text span {
+    display: inline-block;
+    margin: 0 5px;
+    color: #000;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.loading-text span:nth-child(1) {
+    filter: blur(0px);
+    -webkit-animation: blur-text 1.5s 0s infinite linear alternate;
+            animation: blur-text 1.5s 0s infinite linear alternate;
+}
+.loading-text span:nth-child(2) {
+    filter: blur(0px);
+    -webkit-animation: blur-text 1.5s 0.2s infinite linear alternate;
+            animation: blur-text 1.5s 0.2s infinite linear alternate;
+}
+.loading-text span:nth-child(3) {
+    filter: blur(0px);
+    -webkit-animation: blur-text 1.5s 0.4s infinite linear alternate;
+            animation: blur-text 1.5s 0.4s infinite linear alternate;
+}
+.loading-text span:nth-child(4) {
+    filter: blur(0px);
+    -webkit-animation: blur-text 1.5s 0.6s infinite linear alternate;
+            animation: blur-text 1.5s 0.6s infinite linear alternate;
+}
+.loading-text span:nth-child(5) {
+    filter: blur(0px);
+    -webkit-animation: blur-text 1.5s 0.8s infinite linear alternate;
+            animation: blur-text 1.5s 0.8s infinite linear alternate;
+}
+.loading-text span:nth-child(6) {
+    filter: blur(0px);
+    -webkit-animation: blur-text 1.5s 1s infinite linear alternate;
+            animation: blur-text 1.5s 1s infinite linear alternate;
+}
+.loading-text span:nth-child(7) {
+    filter: blur(0px);
+    -webkit-animation: blur-text 1.5s 1.2s infinite linear alternate;
+            animation: blur-text 1.5s 1.2s infinite linear alternate;
+}
+.loading-text span:nth-child(8) {
+    filter: blur(0px);
+    -webkit-animation: blur-text 1.5s 1.4s infinite linear alternate;
+            animation: blur-text 1.5s 1.4s infinite linear alternate;
+}
+.loading-text span:nth-child(9) {
+    filter: blur(0px);
+    -webkit-animation: blur-text 1.5s 1.6s infinite linear alternate;
+            animation: blur-text 1.5s 1.6s infinite linear alternate;
+}
+
+@-webkit-keyframes blur-text {
+    0% {
+        filter: blur(0px);
+    }
+    100% {
+        filter: blur(4px);
+    }
+}
+@keyframes blur-text {
+    0% {
+        filter: blur(0px);
+    }
+    100% {
+        filter: blur(4px);
+    }
+}
+
 .contianer.buy-add-btn {
     display: flex;
     gap: 5px;
@@ -2013,6 +2109,8 @@ textarea.input-field {
         height: 78%;
     }
 
+    
+
 
 
     /* Contact */
@@ -2116,6 +2214,7 @@ textarea.input-field {
     .shop-card.grid .h3 {
         --fs-3: 2.3rem;
     }
+
 
 
     /* contact */
