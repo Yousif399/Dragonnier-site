@@ -1,0 +1,59 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="login.css" />
+
+    <title>Dragonnier</title>
+  </head>
+  <body>
+    <div class="container">
+      <form class="login">
+        <a href="index.html"
+          ><img src="Icons/DragonnierLogo.svg" alt="Company logo" class="logo"
+        /></a>
+        <h1 class="h1">
+          Enter Your Username And Password To Access To The Page
+        </h1>
+        <button class="btn social-btns" onclick="stopFakeBtnsClick(event,this)">
+          <img src="Icons/300221.svg" class="social-icons" height="25" alt="" />
+          Sign in with google
+        </button>
+        <button class="btn social-btns" onclick="stopFakeBtnsClick(event,this)">
+          <img src="Icons/731985.svg" class="social-icons" height="25" />Sign in
+          with Apple
+        </button>
+        <div class="lines">
+          <div class="line"></div>
+          OR
+          <div class="line"></div>
+        </div>
+        <label for="username">Enter Your Username: </label>
+        <input
+          type="text"
+          name="username"
+          id="username"
+          placeholder="Your Username"
+          required
+          minlength="3"
+          maxlength="15"
+        />
+        <label for="password">Enter Your Password: </label>
+        <input
+          type="password"
+          name="password"
+          id="password"
+          placeholder="Your Password"
+          required
+          minlength="5"
+          maxlength="15"
+        />
+
+        <button class="btn login-btn">Login</button>
+        <a class="forget-password" href="">Forget Password ?</a>
+      </form>
+    </div>
+
+    <script src="login.js" defer></script>
+  </body>
+</html>

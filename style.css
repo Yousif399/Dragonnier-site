@@ -18,6 +18,7 @@ Custom Pro
   --cultured-2: hsl(210, 60%, 98%);
   --platinum: hsl(0, 0%, 90%);
   --gray-web: hsl(220, 5%, 49%);
+  --light-white: #0000004b;
   --cultured: hsl(0, 0%, 93%);
   --black_10: hsla(0, 0%, 0%, 0.1);
   --black_5: hsla(0, 0%, 0%, 0.05);
@@ -370,6 +371,10 @@ h3 {
   transition: var(--transition-1);
 }
 
+.navbar-list li {
+  padding: 1rem;
+}
+
 .navbar.active .navbar-list {
   opacity: 1;
 }
@@ -398,8 +403,6 @@ button.navbar-link {
 }
 
 ion-icon.nav-arrow {
-  position: absolute;
-  left: 100%;
   padding-left: 4px;
 }
 
@@ -540,18 +543,25 @@ ion-icon.nav-arrow {
   position: relative;
   border-radius: var(--radius-8);
   overflow: hidden;
+  background-color: var(--primary-light);
+  transition: scale 2s ease;
 }
 
-.project-card::after {
+.project-card:after {
   content: "";
   position: absolute;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: var(--black);
-  opacity: 0.5;
-  transition: var(--transition-2);
+  background-color: var(--light-white);
+  opacity: 0.25;
+  transition: var(--transition-2), scale 8s ease-in;
+}
+
+.project-card:hover {
+  opacity: 111;
+  scale: 1.1;
 }
 
 .project-card:is(:hover, :focus-within)::after {
@@ -765,6 +775,18 @@ a.section-title {
 
 .loading-popup {
   display: none;
+}
+
+.card-content.shop-page {
+  background-color: var(--light-white);
+  padding: 5rem;
+}
+
+.shop-page .card-subtitle {
+  color: var(--white);
+  font-size: 2.3rem;
+  font-weight: var(--fw-700);
+  padding: 1rem;
 }
 
 /* loading popup */
@@ -1503,7 +1525,7 @@ a.section-title {
   text-align: center;
   margin-top: 2rem;
   background-color: var(--white-2);
-  transition: scale .4s, font-weight .4s, color .3s;
+  transition: scale 0.4s, font-weight 0.4s, color 0.3s;
 }
 
 .check-for-more:hover {
@@ -1891,6 +1913,8 @@ textarea.input-field {
     grid-template-columns: 0.47fr 0.8fr;
     align-items: center;
     gap: 15px;
+    height: 100%;
+    max-height: 250px;
   }
 
   /* contact */
@@ -1920,7 +1944,7 @@ textarea.input-field {
 @media (min-width: 768px) {
   /* global property */
   :root {
-    --fs-1: 4.5;
+    --fs-1: 4rem;
     --fs-2: 3.7rem;
     --fs-3: 2.3rem;
     --fs-4: 1.8rem;
@@ -2104,7 +2128,7 @@ textarea.input-field {
 
   .shop .grid-list > li:first-child {
     grid-column: 1/2;
-    grid-row: 1/6;
+    /* grid-row: 1/6; */
   }
 
   .shop-card:not(.grid) {

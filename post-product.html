@@ -149,6 +149,7 @@
             <li>
               <a href="#contact" class="navbar-link" data-navlink>Contact Us</a>
             </li>
+            <li style="width: 100%;"><button style="width: 30%; float: right;" class="btn btn-secondary" id="Log-out">Log-out</button></li>
           </ul>
         </nav>
         <button
@@ -172,11 +173,9 @@
             <!-- <p class="section-title">For any IT queries </p> -->
 
             <form
-
               enctype="multipart/form-data"
               id="product-form"
               class="contact-form"
-
             >
               <div class="input-wrapper">
                 <input
@@ -234,7 +233,11 @@
                 />
               </div>
 
-              <button type="submit" class="btn btn-secondary" onclick="onSubmit(event)">
+              <button
+                type="submit"
+                class="btn btn-secondary"
+                onclick="onSubmit(event)"
+              >
                 Add more products +
               </button>
             </form>
@@ -243,7 +246,7 @@
           </div>
         </section>
 
-        <section class="loading-popup ">
+        <section class="loading-popup">
           <div id="loading-popup ">
             <div class="loading-text active">
               <span class="section-loading">L</span>
@@ -404,6 +407,7 @@
     </main>
 
     <script src="./main.js" defer></script>
+    <script src="login.js" defer></script>
     <script
       type="module"
       src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"

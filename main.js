@@ -81,20 +81,30 @@ if (closePopUp) {
   };
 }
 const anyThing = async (id) => {
+  var priceForEachProduct = document.querySelector('.product-price-for-each')
   popUpContainer.classList.add("active");
 
   try {
     const products = await fetchProducts();
     const item = products.find((item) => item.id === id);
-
+    // console.log("itemmmmm", item.productQuantity);
+    
     if (!item) {
       console.error(`Product with id ${id} not found`);
       return;
     }
-
+    
     const firmPrice = parseInt(item.productPrice);
-    let subTotal = firmPrice;
-    let newChangeNumber = 4; // Assuming initial quantity is 4
+    // initializing price for each 
+    priceForEachProduct.innerHTML = `$${firmPrice.toFixed(2)} `
+    // initializing the minimum per order 
+    let minimumPerOrder = item.productQuantity;
+    // setting the subtotal by multiple it by minimum product per order
+    let subTotal = firmPrice * minimumPerOrder;
+    // setting the new value for our add remove number
+    changeNumber.innerHTML = minimumPerOrder;
+
+    let newChangeNumber = minimumPerOrder; // Assuming initial quantity is 4
 
     nameOfProduct.innerHTML = item.productName;
     document.querySelector(
@@ -113,15 +123,15 @@ const anyThing = async (id) => {
       btn.addEventListener("click", () => {
         const action = btn.innerText;
 
-        if (action === "-" && newChangeNumber > 4) {
+        if (action === "-" && newChangeNumber > minimumPerOrder) {
           newChangeNumber -= 1;
-          subTotal -= firmPrice / 4;
+          subTotal -= firmPrice ;
         } else if (action === "+") {
           newChangeNumber += 1;
           //   console.log(changeNumber);
-          subTotal += firmPrice / 4;
+          subTotal += firmPrice ;
         } else {
-          alert("Cannot make orders less than 4");
+          alert(`Cannot make orders less than ${minimumPerOrder}`);
           return;
         }
 
@@ -137,9 +147,10 @@ const anyThing = async (id) => {
       restBtn.onclick = () => {
         // console.log("resetinggg", item.id);
         const firmPrice = parseInt(item.productPrice);
-        subTotal = firmPrice;
-        newChangeNumber = 4; // Assuming initial quantity is 4
-        changeNumber.textContent = 4;
+        priceForEachProduct.innerHTML = firmPrice
+        subTotal = firmPrice * minimumPerOrder;
+        newChangeNumber = minimumPerOrder; // Assuming initial quantity is 4
+        changeNumber.textContent = minimumPerOrder;
         // console.log(changeNumber);
 
         document.querySelector(
@@ -458,7 +469,7 @@ const createProductCard = (product) => {
       <h3 class="h3">
         <a href="#" class="card-title">${product.productName}</a>
       </h3>
-      <p class="price-tag"> $<span class="price">${product.productPrice}</span> </p>
+      <p class="price-tag"> $<span class="price"> ${product.productPrice} Each</span> </p>
       <p class="price-tag"> Quantity: <span class="price"> ${product.productQuantity}</span> </p>
       <button class="btn btn-secondary edit" onClick=handleUpdating(${product.id})>Edit product</button>
       <button class="btn btn-secondary" onClick=handleId(${product.id}) >Delete product</button>
@@ -491,9 +502,9 @@ const createProductCardInHome = (product) => {
         <h3 class="h3">
             <a href="#" class="card-title">${product.productName}</a>
         </h3>
-        <p class="price-tag"> $<span class="price">${
+        <p class="price-tag"> <span class="price"> $${
           product.productPrice
-        }</span> </p>
+        } Each</span> </p>
         <div class="container buy-add-btn">
         
             <button class="btn btn-secondary buy-btn" onclick=anyThing(${
@@ -523,12 +534,12 @@ const createProductCardInShop = (product) => {
         <img src="${product.productImg}" width="860" height="646" loading="lazy" alt="${product.productName}" class="img-cover">
       </figure>
 
-            <div class="card-content">
+            <div class="card-content shop-page">
 
                 <h3 class="h3">${product.productName}</h3>
 
                 <p class="card-subtitle">
-                    $${product.productPrice}
+                   $${product.productPrice} Each
                 </p>
 
                 <button class="btn btn-secondary buy-btn" onclick=anyThing(${product.id}) >Buy now</button>
