@@ -14,16 +14,16 @@ if (window.location.pathname === "/post-product.html") {
       const response = await fetch(url, options);
       if (response.status === 200) {
         console.log("it's already 200 do nothing");
-        return true
+        return true;
       } else {
         console.log("Authentication Failed, back to log-in");
         window.location = "access-product.html";
-        return false
+        return false;
       }
     } catch (error) {
       console.error(`Error: ${error}`);
       window.location = "access-product.html";
-      return false
+      return false;
     }
   };
   checkLogIn();
@@ -109,8 +109,10 @@ const validateUser = async (e) => {
   e.preventDefault();
   const formData = new FormData(loginForm);
   const url = `https://dragonnier-site.up.railway.app/login`;
+
   const options = {
     method: "POST",
+   
     body: formData,
     credentials: "include",
   };
@@ -122,7 +124,7 @@ const validateUser = async (e) => {
     const data = await response.json();
     // console.log(data);
     if (response.status === 200 || response.status === 201) {
-      console.log("Navigating to the pos-product page")
+      console.log("Navigating to the pos-product page");
       window.location.href = "post-product.html";
     } else {
       console.log("Validation went wrong .", data.Message);
@@ -146,7 +148,7 @@ const logOutUser = async () => {
     const response = await fetch(url, options);
     if (response.status === 200) {
       console.log("User has been logged out");
-      window.location = "post-product.html";
+      window.location = "index.html";
     } else {
       console.log("Error happened could't log-out");
     }
